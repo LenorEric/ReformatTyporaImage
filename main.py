@@ -3,15 +3,19 @@ import cv2
 import numpy as np
 
 
-def read_chinese(_target_path, _method):
+def read_image(_target_path, _method):
     _image = cv2.imdecode(np.fromfile(_target_path, dtype=np.uint8), _method)
     return _image
+
+
+def write_image(_target_path, _image):
+    cv2.imencode('.jpg', _image)[1].tofile(_target_path)
 
 
 if __name__ == '__main__':
     assert len(sys.argv) == 2
     target_path = sys.argv[1]
-    tar_img = cv2.imread(target_path, cv2.IMREAD_UNCHANGED)
+    tar_img = read_image(target_path, cv2.IMREAD_UNCHANGED)
     diff = 0
     h = 0
     last_letter = 0
@@ -24,5 +28,5 @@ if __name__ == '__main__':
             last_letter = h
         h += 1
     tar_img = tar_img[:min(last_letter + 60, h - diff)]
-    cv2.imwrite(target_path, tar_img)
+    write_image(target_path, tar_img)
     print("Done")

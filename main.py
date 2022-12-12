@@ -1,5 +1,12 @@
 import sys
 import cv2
+import numpy as np
+
+
+def read_chinese(_target_path, _method):
+    _image = cv2.imdecode(np.fromfile(_target_path, dtype=np.uint8), _method)
+    return _image
+
 
 if __name__ == '__main__':
     assert len(sys.argv) == 2
@@ -16,6 +23,6 @@ if __name__ == '__main__':
         if tar_img[h].min() <= 250:
             last_letter = h
         h += 1
-    tar_img = tar_img[:min(last_letter + 60, h-diff)]
+    tar_img = tar_img[:min(last_letter + 60, h - diff)]
     cv2.imwrite(target_path, tar_img)
     print("Done")
